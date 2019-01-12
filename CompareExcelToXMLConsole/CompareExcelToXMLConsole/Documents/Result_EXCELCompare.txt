@@ -1,0 +1,16 @@
+SECG - PSECGHK005D (not disable, job description, script name, alert message)
+             PSECGHK006D (not disable)
+             PSECGHK009D (Job Description, Trigger Time, Parameter, alert message)
+	  PSECGHK010D (not disable)
+	  PSECGHK013D (parameter)
+	  PSECGMC005D (alert message)
+	  PSECGMC009D (Job Description, Parameter, alert message)
+	  PSECGMC011D (trigger time)
+	
+	
+SECO - PSECOHK005D (alert message [in any case, two error message will be shown])
+	  PSECOHK011D (Job Description)
+	
+SECB - PSECBHK071D (Trigger time)
+            PSECBMC052D (Hostname)
+	 PSECBMC060D (Missing details in xml file)

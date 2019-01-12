@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--Exported at 10-01-2019 16:37:49-->
+<DEFTABLE xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="Folder.xsd">
+    <FOLDER DATACENTER="asihkdapp59" VERSION="900" PLATFORM="UNIX" FOLDER_NAME="SECG" MODIFIED="False" LAST_UPLOAD="20190110082028UTC" FOLDER_ORDER_METHOD="SYSTEM" REAL_FOLDER_ID="221" TYPE="1" USED_BY_CODE="0">
+        <JOB JOBISN="1" APPLICATION="SECG" SUB_APPLICATION="HK" MEMNAME="ControlMOracle.sh" JOBNAME="PSECGHK002D" DESCRIPTION="Generate Contingency Report (HK)&#xD;&#xA;conhkt.sh (UAT-A), conhkw.sh (UAT-B)&#xD;&#xA;conhk.sh (PDN)" CREATED_BY="CAHK3AW" RUN_AS="nbscmjob" CRITICAL="0" TASKTYPE="Job" CYCLIC="0" NODEID="asihkdodb12v1" INTERVAL="00001M" MEMLIB="/banktools/oper" CONFIRM="0" DAYSCAL="HK_BACKDAY" RETRO="0" MAXWAIT="2" MAXRERUN="0" AUTOARCH="1" MAXDAYS="0" MAXRUNS="0" TIMEFROM="0550" WEEKDAYS="1,2,3,4,0" JAN="1" FEB="1" MAR="1" APR="1" MAY="1" JUN="1" JUL="1" AUG="1" SEP="1" OCT="1" NOV="1" DEC="1" DAYS_AND_OR="A" SHIFT="Ignore Job" SHIFTNUM="+00" SYSDB="1" IND_CYCLIC="S" CREATION_USER="NBKPSN2" CREATION_DATE="20180412" CREATION_TIME="170223" RULE_BASED_CALENDAR_RELATIONSHIP="O" APPL_TYPE="OS" MULTY_AGENT="N" USE_INSTREAM_JCL="N" VERSION_OPCODE="N" IS_CURRENT_VERSION="Y" VERSION_SERIAL="1" VERSION_HOST="CCBDPC20" CYCLIC_TOLERANCE="0" CYCLIC_TYPE="C" PARENT_FOLDER="SECG">
+            <VARIABLE NAME="%%PARM1" VALUE="/banktools/oper/11g/conhk.sh" />
+            <SHOUT WHEN="NOTOK" URGENCY="U" DEST="EM" MESSAGE="%%JOBNAME Ended Not ok, please refer the following email to action" />
+            <OUTCOND NAME="PSECGHK002D-TO-PSECGHK003D_0550" ODATE="ODAT" SIGN="+" />
+            <ON STMT="*" CODE="NOTOK">
+                <DOMAIL URGENCY="U" DEST="isgdpcalert@asia.ccb.com" CC_DEST="isdproductioncontrol@asia.ccb.com" SUBJECT="%%JOBNAME Ended Not ok, please refer the following email to action" MESSAGE="0016Error handling: 00000089Ended not OK, Please inform Sec team support about &quot;Generate HK Contingency Report issue&quot;00000018Hostname: %%NODEID0024Application: %%APPLGROUP0019Jobname - %%JOBNAME0022Error Code: %%COMPSTAT" ATTACH_SYSOUT="Y" />
+            </ON>
+        </JOB>
+        <JOB JOBISN="2" APPLICATION="SECG" SUB_APPLICATION="HK" MEMNAME="CALLAPI.bat" JOBNAME="PSECGHK003D_0550" DESCRIPTION="Transfer Contingency Report to Trader (HK)&#xD;&#xA;" CREATED_BY="cahk3aw" RUN_AS="system" CRITICAL="0" TASKTYPE="Job" CYCLIC="0" NODEID="ASIHKDFTR00" INTERVAL="00001M" MEMLIB="D:\Apps\MOVEitCentralAPI\batch" CONFIRM="0" DAYSCAL="HK_BACKDAY" RETRO="0" MAXWAIT="2" MAXRERUN="0" AUTOARCH="1" MAXDAYS="0" MAXRUNS="0" WEEKDAYS="1,2,3,4,0" JAN="1" FEB="1" MAR="1" APR="1" MAY="1" JUN="1" JUL="1" AUG="1" SEP="1" OCT="1" NOV="1" DEC="1" DAYS_AND_OR="A" SHIFT="Ignore Job" SHIFTNUM="+00" SYSDB="1" IND_CYCLIC="S" CREATION_USER="NBKPSN2" CREATION_DATE="20180412" CREATION_TIME="170223" RULE_BASED_CALENDAR_RELATIONSHIP="O" APPL_TYPE="OS" MULTY_AGENT="N" USE_INSTREAM_JCL="N" VERSION_OPCODE="N" IS_CURRENT_VERSION="Y" VERSION_SERIAL="1" VERSION_HOST="CCBDPC20" CYCLIC_TOLERANCE="0" CYCLIC_TYPE="C" PARENT_FOLDER="SECG">
+            <VARIABLE NAME="%%PARM1" VALUE="SECHKCONTRPT_11G" />
+            <SHOUT WHEN="NOTOK" URGENCY="V" DEST="EM" MESSAGE="%%JOBNAME Ended Not ok, please refer the following email to action" />
+            <INCOND NAME="PSECGHK002D-TO-PSECGHK003D_0550" ODATE="ODAT" AND_OR="A" />
+            <OUTCOND NAME="PSECGHK002D-TO-PSECGHK003D_0550" ODATE="ODAT" SIGN="-" />
+            <ON STMT="*" CODE="NOTOK">
+                <DOMAIL URGENCY="V" DEST="isgdpcalert@asia.ccb.com" CC_DEST="isdproductioncontrol@asia.ccb.com" SUBJECT="%%JOBNAME Ended Not ok, please refer the following email to action" MESSAGE="0017Error Handling : 00000140Ended not OK,  Re-run Job after 5 minutes. If task fail after re-run ,  inform Sec team support about &quot;Transfer HK Contingency Report issue&quot;00000018Hostname: %%NODEID0024Application: %%APPLGROUP0019Jobname - %%JOBNAME0022Error Code: %%COMPSTAT" ATTACH_SYSOUT="Y" />
+            </ON>
+        </JOB>
+        <JOB JOBISN="3" APPLICATION="SECG" SUB_APPLICATION="HK" JOBNAME="PSECGHK005D" DESCRIPTION="Check readiness of Margin result file &#xA;&#xA;File watcher (Time limit: 150 minutes)&#xD;&#xA;File age : Minimal age = 1 minutes&#xA;Infocast_YYYYMMDD.txt&#xD;&#xA;" CREATED_BY="CAHK3AW" RUN_AS="system" CRITICAL="0" TASKTYPE="Job" CYCLIC="0" NODEID="ASIHKDGAPDA" INTERVAL="00001M" CONFIRM="0" DAYSCAL="HK_BACKDAY" RETRO="0" MAXWAIT="2" MAXRERUN="0" AUTOARCH="1" MAXDAYS="0" MAXRUNS="0" TIMEFROM="0600" WEEKDAYS="1,2,3,4,0" JAN="1" FEB="1" MAR="1" APR="1" MAY="1" JUN="1" JUL="1" AUG="1" SEP="1" OCT="1" NOV="1" DEC="1" DAYS_AND_OR="A" SHIFT="Ignore Job" SHIFTNUM="+00" SYSDB="1" IND_CYCLIC="S" CREATION_USER="NBKPSN2" CREATION_DATE="20180412" CREATION_TIME="170223" RULE_BASED_CALENDAR_RELATIONSHIP="O" APPL_TYPE="FileWatch" APPL_VER="W2K/XP" APPL_FORM="File Watcher" CM_VER="N/A" MULTY_AGENT="N" USE_INSTREAM_JCL="N" VERSION_OPCODE="N" IS_CURRENT_VERSION="Y" VERSION_SERIAL="1" VERSION_HOST="CCBDPC20" CYCLIC_TOLERANCE="0" CYCLIC_TYPE="C" PARENT_FOLDER="SECG">
+            <VARIABLE NAME="%%FileWatch-FILE_PATH" VALUE="D:\ibrokerdrive\wdrive\FromICBS\Infocast_%%$DATE..txt" />
+            <VARIABLE NAME="%%FileWatch-MODE" VALUE="CREATE" />
+            <VARIABLE NAME="%%FileWatch-MIN_DET_SIZE" VALUE="0B" />
+            <VARIABLE NAME="%%FileWatch-INT_FILE_SEARCHES" VALUE="60" />
+            <VARIABLE NAME="%%FileWatch-INT_FILESIZE_COMPARISON" VALUE="10" />
+            <VARIABLE NAME="%%FileWatch-NUM_OF_ITERATIONS" VALUE="3" />
+            <VARIABLE NAME="%%FileWatch-FILESIZE_WILDCARD" VALUE="N" />
+            <VARIABLE NAME="%%FileWatch-TIME_LIMIT" VALUE="150" />
+            <VARIABLE NAME="%%FileWatch-START_TIME" VALUE="NOW" />
+            <VARIABLE NAME="%%FileWatch-STOP_TIME" VALUE="0" />
+            <VARIABLE NAME="%%FileWatch-MIN_AGE" VALUE="1MIN" />
+            <VARIABLE NAME="%%FileWatch-MAX_AGE" VALUE="NO_MAX_AGE" />
+            <SHOUT WHEN="NOTOK" URGENCY="U" DEST="EM" MESSAGE="%%JOBNAME Ended Not ok, please refer the following email to action" />
+            <OUTCOND NAME="PSECGHK005D-TO-PSECGHK006D" ODATE="ODAT" SIGN="+" />
+            <ON STMT="*" CODE="NOTOK">
+                <DOMAIL URGENCY="U" DEST="isgdpcalert@asia.ccb.com" CC_DEST="isdproductioncontrol@asia.ccb.com" SUBJECT="%%JOBNAME Ended Not ok, please refer the following email to action" MESSAGE="0037Ended not OK, Please check following:000000761. Check AL OG Jobsheet MoveIT job &quot;B13_HK_FMICBS_11G&quot; is completed or not. 000000402. If step 1 completed, re-run this job.000000893. If re-run fail, inform Sec team support about &quot;HK Margin result file readiness issue&quot;.000000454. Ignore this error during FULL-DAY TYPHOON.00000018Hostname: %%NODEID0024Application: %%APPLGROUP0019Jobname - %%JOBNAME0022Error Code: %%COMPSTAT0000" ATTACH_SYSOUT="Y" />
+            </ON>
+        </JOB>
+        <JOB JOBISN="4" APPLICATION="SECG" SUB_APPLICATION="HK" MEMNAME="FileTransfer.exe" JOBNAME="PSECGHK006D" DESCRIPTION="Run FileTransfer program&#xA;Transfer Margin Result file  (HK)" CREATED_BY="CAHK3AW" RUN_AS="system" CRITICAL="0" TASKTYPE="Job" CYCLIC="0" NODEID="ASIHKDGAPDA" INTERVAL="00001M" MEMLIB="D:\ibrokerdrive\wdrive\Utilities\FileTransferJob\bin" CONFIRM="0" DAYSCAL="HK_BACKDAY" RETRO="0" MAXWAIT="2" MAXRERUN="0" AUTOARCH="1" MAXDAYS="0" MAXRUNS="0" WEEKDAYS="1,2,3,4,0" JAN="1" FEB="1" MAR="1" APR="1" MAY="1" JUN="1" JUL="1" AUG="1" SEP="1" OCT="1" NOV="1" DEC="1" DAYS_AND_OR="A" SHIFT="Ignore Job" SHIFTNUM="+00" SYSDB="1" IND_CYCLIC="S" CREATION_USER="NBKPSN2" CREATION_DATE="20180412" CREATION_TIME="170223" RULE_BASED_CALENDAR_RELATIONSHIP="O" APPL_TYPE="OS" MULTY_AGENT="N" USE_INSTREAM_JCL="N" VERSION_OPCODE="N" IS_CURRENT_VERSION="Y" VERSION_SERIAL="1" VERSION_HOST="CCBDPC20" CYCLIC_TOLERANCE="0" CYCLIC_TYPE="C" PARENT_FOLDER="SECG">
+            <VARIABLE NAME="%%PARM1" VALUE="Margin_Result" />
+            <VARIABLE NAME="%%PARM2" VALUE="%%$DATE" />
+            <SHOUT WHEN="NOTOK" URGENCY="U" DEST="EM" MESSAGE="%%JOBNAME Ended Not ok, please refer the following email to action" />
+            <INCOND NAME="PSECGHK005D-TO-PSECGHK006D" ODATE="ODAT" AND_OR="A" />
+            <OUTCOND NAME="PSECGHK005D-TO-PSECGHK006D" ODATE="ODAT" SIGN="-" />
+            <ON STMT="*" CODE="NOTOK">
+                <DOMAIL URGENCY="U" DEST="isgdpcalert@asia.ccb.com" CC_DEST="isdproductioncontrol@asia.ccb.com" SUBJECT="%%JOBNAME Ended Not ok, please refer the following email to action" MESSAGE="0016Error handling: 00000115 Ended not OK, Please inform Sec team support about &quot;Transfer ICBS HK Margin result (To local common folder) issue&quot;00000018Hostname: %%NODEID0024Application: %%APPLGROUP0019Jobname - %%JOBNAME0022Error Code: %%COMPSTAT" ATTACH_SYSOUT="Y" />
+            </ON>
+            <ON STMT="*" CODE="OK">
+                <DOSHOUT URGENCY="R" MESSAGE="%%JOBNAME Ended OK, Please go to  next step in AL OG Jobsheet &quot;Get download margin settlement Interface file to I-Broker&quot;" DEST="EM" />
+            </ON>
+        </JOB>
+        <JOB JOBISN="5" APPLICATION="SECG" SUB_APPLICATION="HK" JOBNAME="PSECGHK007D" DESCRIPTION="Check MAMK Shanghai stock code ready (HK)&#xA;&#xA;&#xD;&#xA;File watcher (Time Limit 60 minutes)&#xD;&#xA;File age : Minimal age = 1 minutes&#xA;C:\STAGING\CCASS\STKMAP*.zip&#xD;&#xA;" CREATED_BY="CAHK3AW" RUN_AS="system" CRITICAL="0" TASKTYPE="Job" CYCLIC="0" NODEID="CCBDPC02" INTERVAL="00001M" CONFIRM="0" DAYSCAL="HK_BANKDAY_MONtoFRI" RETRO="0" MAXWAIT="2" MAXRERUN="0" AUTOARCH="1" MAXDAYS="0" MAXRUNS="0" TIMEFROM="0800" JAN="1" FEB="1" MAR="1" APR="1" MAY="1" JUN="1" JUL="1" AUG="1" SEP="1" OCT="1" NOV="1" DEC="1" DAYS_AND_OR="O" SHIFT="Ignore Job" SHIFTNUM="+00" SYSDB="1" IND_CYCLIC="S" CREATION_USER="NBKPSN2" CREATION_DATE="20180412" CREATION_TIME="170223" CHANGE_USERID="NBKPSN2" CHANGE_DATE="20180412" CHANGE_TIME="195631" RULE_BASED_CALENDAR_RELATIONSHIP="O" APPL_TYPE="FileWatch" APPL_VER="W2K/XP" APPL_FORM="File Watcher" CM_VER="N/A" MULTY_AGENT="N" USE_INSTREAM_JCL="N" VERSION_OPCODE="N" IS_CURRENT_VERSION="Y" VERSION_SERIAL="2" VERSION_HOST="CCBDPC20" CYCLIC_TOLERANCE="0" CYCLIC_TYPE="C" PARENT_FOLDER="SECG">
+            <VARIABLE NAME="%%FileWatch-FILE_PATH" VALUE="C:\STAGING\CCASS\STKMAP*.zip" />
+            <VARIABLE NAME="%%FileWatch-MODE" VALUE="CREATE" />
+            <VARIABLE NAME="%%FileWatch-MIN_DET_SIZE" VALUE="0B" />
+            <VARIABLE NAME="%%FileWatch-INT_FILE_SEARCHES" VALUE="60" />
+            <VARIABLE NAME="%%FileWatch-INT_FILESIZE_COMPARISON" VALUE="10" />
+            <VARIABLE NAME="%%FileWatch-NUM_OF_ITERATIONS" VALUE="3" />
+            <VARIABLE NAME="%%FileWatch-FILESIZE_WILDCARD" VALUE="N" />
+            <VARIABLE NAME="%%FileWatch-TIME_LIMIT" VALUE="60" />
+            <VARIABLE NAME="%%FileWatch-START_TIME" VALUE="NOW" />
+            <VARIABLE NAME="%%FileWatch-STOP_TIME" VALUE="0" />
+            <VARIABLE NAME="%%FileWatch-MIN_AGE" VALUE="1MIN" />
+            <VARIABLE NAME="%%FileWatch-MAX_AGE" VALUE="NO_MAX_AGE" />
+            <SHOUT WHEN="NOTOK" URGENCY="U" DEST="EM" MESSAGE="%%JOBNAME Ended Not ok, please refer the following email to action" />
+            <OUTCOND NAME="PSECGHK007D-TO-PSECGHK008D" ODATE="ODAT" SIGN="+" />
+            <ON STMT="*" CODE="NOTOK">
+                <DOMAIL URGENCY="U" DEST="isgdpcalert@asia.ccb.com" CC_DEST="isdproductioncontrol@asia.ccb.com" SUBJECT="%%JOBNAME Ended Not ok, please refer the following email to action" MESSAGE="0017Error Handling : 00000037Ended not OK, Please check following:00361. Ignore this error if MAMK Holiday01172. If not, check AL OG Jobsheet task &quot;Download Stock Code Mapping file for MAMK Shanghai Market&quot; is completed or not.00393. If step 2 completed, re-run this job01384. If MAMK broker trade file download in workstation CCBDPC03, ignore this error and run MoveIT job &quot;DPC03D_HK_ECP_TOFNP_SB_11G&quot; manually.01045. If re-run fails,  inform Sec team support about &quot;HK MAMK Shanghai Stock Code Mapping readiness issue&quot;00456. Ignore this error during FULL-DAY TYPHOON.00000018Hostname: %%NODEID0024Application: %%APPLGROUP0019Jobname - %%JOBNAME0022Error Code: %%COMPSTAT" ATTACH_SYSOUT="Y" />
+            </ON>
+        </JOB>
+        <JOB JOBISN="6" APPLICATION="SECG" SUB_APPLICATION="HK" MEMNAME="CALLAPI.bat" JOBNAME="PSECGHK008D" DESCRIPTION="Transfer Stock Code Mapping file for MAMK Shanghai Market (HK)&#xD;&#xA;" CREATED_BY="cahk3aw" RUN_AS="system" CRITICAL="0" TASKTYPE="Job" CYCLIC="0" NODEID="ASIHKDFTR00" INTERVAL="00001M" MEMLIB="D:\Apps\MOVEitCentralAPI\batch" CONFIRM="0" DAYSCAL="HK_BANKDAY_MONtoFRI" RETRO="0" MAXWAIT="2" MAXRERUN="0" AUTOARCH="1" MAXDAYS="0" MAXRUNS="0" JAN="1" FEB="1" MAR="1" APR="1" MAY="1" JUN="1" JUL="1" AUG="1" SEP="1" OCT="1" NOV="1" DEC="1" DAYS_AND_OR="O" SHIFT="Ignore Job" SHIFTNUM="+00" SYSDB="1" IND_CYCLIC="S" CREATION_USER="NBKPSN2" CREATION_DATE="20180412" CREATION_TIME="170223" RULE_BASED_CALENDAR_RELATIONSHIP="O" APPL_TYPE="OS" MULTY_AGENT="N" USE_INSTREAM_JCL="N" VERSION_OPCODE="N" IS_CURRENT_VERSION="Y" VERSION_SERIAL="1" VERSION_HOST="CCBDPC20" CYCLIC_TOLERANCE="0" CYCLIC_TYPE="C" PARENT_FOLDER="SECG">
+            <VARIABLE NAME="%%PARM1" VALUE="DPC03A_HK_ECP_TOFNP_11G" />
+            <SHOUT WHEN="NOTOK" URGENCY="V" DEST="EM" MESSAGE="%%JOBNAME Ended Not ok, please refer the following email to action" />
+            <INCOND NAME="PSECGHK007D-TO-PSECGHK008D" ODATE="ODAT" AND_OR="A" />
+            <OUTCOND NAME="PSECGHK007D-TO-PSECGHK008D" ODATE="ODAT" SIGN="-" />
+            <ON STMT="*" CODE="NOTOK">
+                <DOMAIL URGENCY="V" DEST="isgdpcalert@asia.ccb.com" CC_DEST="isdproductioncontrol@asia.ccb.com" SUBJECT="%%JOBNAME Ended Not ok, please refer the following email to action" MESSAGE="0017Error Handling : 00000136Ended not OK: Re-run Job. If task fail after re-run , inform Sec team support about &quot;Transfer HK MAMK Shanghai Stock Code Mapping issue&quot;000000000018Hostname: %%NODEID0024Application: %%APPLGROUP0019Jobname - %%JOBNAME0022Error Code: %%COMPSTAT" ATTACH_SYSOUT="Y" />
+            </ON>
+            <ON STMT="*" CODE="OK">
+                <DOSHOUT URGENCY="R" MESSAGE="%%JOBNAME Ended OK, Please go to  next step in AL OG Jobsheet &quot;Verify and Import Stock Code Mapping file for MAMK Shanghai Market&quot;" DEST="EM" />
+            </ON>
+        </JOB>
+        <JOB JOBISN="7" APPLICATION="SECG" SUB_APPLICATION="HK" MEMNAME="CALLAPI.bat" JOBNAME="PSECGHK009D" DESCRIPTION="Transfer Interest Rate and Exchange Rate from ICBS (HK)&#xD;&#xA;" CREATED_BY="cahk3aw" RUN_AS="system" CRITICAL="0" TASKTYPE="Job" CYCLIC="0" NODEID="ASIHKDFTR00" INTERVAL="00001M" MEMLIB="D:\Apps\MOVEitCentralAPI\batch" CONFIRM="0" DAYSCAL="HK_BANKDAY_MONtoFRI" RETRO="0" MAXWAIT="2" MAXRERUN="0" AUTOARCH="1" MAXDAYS="0" MAXRUNS="0" TIMEFROM="1215" JAN="1" FEB="1" MAR="1" APR="1" MAY="1" JUN="1" JUL="1" AUG="1" SEP="1" OCT="1" NOV="1" DEC="1" DAYS_AND_OR="O" SHIFT="Ignore Job" SHIFTNUM="+00" SYSDB="1" IND_CYCLIC="S" CREATION_USER="NBKPSN2" CREATION_DATE="20180412" CREATION_TIME="170223" RULE_BASED_CALENDAR_RELATIONSHIP="O" APPL_TYPE="OS" MULTY_AGENT="N" USE_INSTREAM_JCL="N" VERSION_OPCODE="N" IS_CURRENT_VERSION="Y" VERSION_SERIAL="1" VERSION_HOST="CCBDPC20" CYCLIC_TOLERANCE="0" CYCLIC_TYPE="C" PARENT_FOLDER="SECG">
+            <VARIABLE NAME="%%PARM1" VALUE="B15_HK_RATE_FMICBS_T1_11G" />
+            <SHOUT WHEN="NOTOK" URGENCY="V" DEST="EM" MESSAGE="%%JOBNAME Ended Not ok, please refer the following email to action" />
+            <SHOUT WHEN="LATETIME" TIME="1230" URGENCY="U" DEST="LATEFIN_MAIL_OPS" MESSAGE="%%JOBNAME Late finish: 12:30HKT not completed yet, please inform Sec team supoort about &quot;Late finish of transfer HK Interest Rate and Exchange Rate from ICBS MOVE-IT T1 issue&quot;" DAYSOFFSET="0" />
+            <OUTCOND NAME="PSECGHK009D-TO-PSECGHK010D" ODATE="ODAT" SIGN="+" />
+            <ON STMT="*" CODE="NOTOK">
+                <DOMAIL URGENCY="V" DEST="isgdpcalert@asia.ccb.com" CC_DEST="isdproductioncontrol@asia.ccb.com" SUBJECT="%%JOBNAME Ended Not ok, please refer the following email to action" MESSAGE="0017Error Handling : 00000123Ended not OK, Please inform Sec team support about &quot;Transfer HK Interest Rate and Exchange Rate from ICBS MOVE-IT T1 issue&quot;00000018Hostname: %%NODEID0024Application: %%APPLGROUP0019Jobname - %%JOBNAME0022Error Code: %%COMPSTAT" ATTACH_SYSOUT="Y" />
+            </ON>
+        </JOB>
+        <JOB JOBISN="8" APPLICATION="SECG" SUB_APPLICATION="HK" MEMNAME="CALLAPI.bat" JOBNAME="PSECGHK010D" DESCRIPTION="Transfer Interest Rate and Exchange Rate from ICBS (HK)&#xD;&#xA;" CREATED_BY="cahk3aw" RUN_AS="system" CRITICAL="0" TASKTYPE="Job" CYCLIC="0" NODEID="ASIHKDFTR00" INTERVAL="00001M" MEMLIB="D:\Apps\MOVEitCentralAPI\batch" CONFIRM="0" DAYSCAL="HK_BANKDAY_MONtoFRI" RETRO="0" MAXWAIT="2" MAXRERUN="0" AUTOARCH="1" MAXDAYS="0" MAXRUNS="0" JAN="1" FEB="1" MAR="1" APR="1" MAY="1" JUN="1" JUL="1" AUG="1" SEP="1" OCT="1" NOV="1" DEC="1" DAYS_AND_OR="O" SHIFT="Ignore Job" SHIFTNUM="+00" SYSDB="1" IND_CYCLIC="S" CREATION_USER="NBKPSN2" CREATION_DATE="20180412" CREATION_TIME="170223" RULE_BASED_CALENDAR_RELATIONSHIP="O" APPL_TYPE="OS" MULTY_AGENT="N" USE_INSTREAM_JCL="N" VERSION_OPCODE="N" IS_CURRENT_VERSION="Y" VERSION_SERIAL="1" VERSION_HOST="CCBDPC20" CYCLIC_TOLERANCE="0" CYCLIC_TYPE="C" PARENT_FOLDER="SECG">
+            <VARIABLE NAME="%%PARM1" VALUE="B15_HK_RATE_FMICBS_T2_11G" />
+            <SHOUT WHEN="NOTOK" URGENCY="V" DEST="EM" MESSAGE="%%JOBNAME Ended Not ok, please refer the following email to action" />
+            <INCOND NAME="PSECGHK009D-TO-PSECGHK010D" ODATE="ODAT" AND_OR="A" />
+            <OUTCOND NAME="PSECGHK009D-TO-PSECGHK010D" ODATE="ODAT" SIGN="-" />
+            <ON STMT="*" CODE="NOTOK">
+                <DOMAIL URGENCY="V" DEST="isgdpcalert@asia.ccb.com" CC_DEST="isdproductioncontrol@asia.ccb.com" SUBJECT="%%JOBNAME Ended Not ok, please refer the following email to action" MESSAGE="0017Error Handling : 00000123Ended not OK, Please inform Sec team support about &quot;HK Transfer Interest Rate and Exchange Rate from ICBS MOVE-IT T2 issue&quot;000000000018Hostname: %%NODEID0024Application: %%APPLGROUP0019Jobname - %%JOBNAME0022Error Code: %%COMPSTAT" ATTACH_SYSOUT="Y" />
+            </ON>
+        </JOB>
+        <JOB JOBISN="9" APPLICATION="SECG" SUB_APPLICATION="HK" MEMNAME="CALLAPI.bat" JOBNAME="PSECGHK011D" DESCRIPTION="Transfer SEHK Exchange Rate from Download ExRate (HKEx website) (HK)&#xD;&#xA;" CREATED_BY="cahk3aw" RUN_AS="system" CRITICAL="0" TASKTYPE="Job" CYCLIC="0" NODEID="ASIHKDFTR00" INTERVAL="00001M" MEMLIB="D:\Apps\MOVEitCentralAPI\batch" CONFIRM="0" DAYSCAL="HK_BANKDAY_MONtoFRI" RETRO="0" MAXWAIT="2" MAXRERUN="0" AUTOARCH="1" MAXDAYS="0" MAXRUNS="0" TIMEFROM="1215" JAN="1" FEB="1" MAR="1" APR="1" MAY="1" JUN="1" JUL="1" AUG="1" SEP="1" OCT="1" NOV="1" DEC="1" DAYS_AND_OR="O" SHIFT="Ignore Job" SHIFTNUM="+00" SYSDB="1" IND_CYCLIC="S" CREATION_USER="NBKPSN2" CREATION_DATE="20180412" CREATION_TIME="170223" RULE_BASED_CALENDAR_RELATIONSHIP="O" APPL_TYPE="OS" MULTY_AGENT="N" USE_INSTREAM_JCL="N" VERSION_OPCODE="N" IS_CURRENT_VERSION="Y" VERSION_SERIAL="1" VERSION_HOST="CCBDPC20" CYCLIC_TOLERANCE="0" CYCLIC_TYPE="C" PARENT_FOLDER="SECG">
+            <VARIABLE NAME="%%PARM1" VALUE="DPC01_HK_RATE_FMHKEX_11G" />
+            <SHOUT WHEN="NOTOK" URGENCY="V" DEST="EM" MESSAGE="%%JOBNAME Ended Not ok, please refer the following email to action" />
+            <SHOUT WHEN="LATETIME" TIME="1230" URGENCY="U" DEST="EM" MESSAGE="%%JOBNAME Late finish: 12:30HKT not completed yet, please inform Sec team supoort about &quot;Late finish of transfer HK SEHK Exchange Rate from Download ExRate (HKEx webstite) issue&quot;" DAYSOFFSET="0" />
+            <SHOUT WHEN="LATETIME" TIME="1230" URGENCY="R" DEST="LATE_FIN_MAILOPS" MESSAGE="%%JOBNAME Late finish: 12:30HKT not completed yet, please inform Sec team supoort about &quot;Late finish of transfer HK SEHK Exchange Rate from Download ExRate (HKEx webstite) issue&quot;" DAYSOFFSET="0" />
+            <ON STMT="*" CODE="NOTOK">
+                <DOMAIL URGENCY="V" DEST="isgdpcalert@asia.ccb.com" CC_DEST="isdproductioncontrol@asia.ccb.com" SUBJECT="%%JOBNAME Ended Not ok, please refer the following email to action" MESSAGE="0017Error Handling : 00000126Ended not OK, Please inform Sec team support about &quot;Transfer HK SEHK Exchange Rate from Download ExRate (HKEx webstite) issue&quot;00000018Hostname: %%NODEID0024Application: %%APPLGROUP0019Jobname - %%JOBNAME0022Error Code: %%COMPSTAT" ATTACH_SYSOUT="Y" />
+            </ON>
+        </JOB>
+        <JOB JOBISN="10" APPLICATION="SECG" SUB_APPLICATION="HK" MEMNAME="ControlMOracle.sh" JOBNAME="PSECGHK012D" DESCRIPTION="Generate CCBAL ALO Spread Checking Report (HK)&#xD;&#xA;to_ccba_alo_report_hkt.sh (UAT-A), to_ccba_alo_report_hkw.sh (UAT-B)&#xD;&#xA;to_ccba_alo_report_hk.sh (PDN)" CREATED_BY="NBKPSN2" RUN_AS="nbscmjob" CRITICAL="0" TASKTYPE="Job" CYCLIC="0" NODEID="asihkdodb12v1" INTERVAL="00001M" MEMLIB="/banktools/oper" CONFIRM="0" DAYSCAL="HK_BANKDAY_MONtoFRI" RETRO="0" MAXWAIT="2" MAXRERUN="0" AUTOARCH="1" MAXDAYS="0" MAXRUNS="0" TIMEFROM="0845" JAN="1" FEB="1" MAR="1" APR="1" MAY="1" JUN="1" JUL="1" AUG="1" SEP="1" OCT="1" NOV="1" DEC="1" DAYS_AND_OR="O" SHIFT="Ignore Job" SHIFTNUM="+00" SYSDB="1" IND_CYCLIC="S" CREATION_USER="NBKPSN2" CREATION_DATE="20180412" CREATION_TIME="170223" RULE_BASED_CALENDAR_RELATIONSHIP="O" APPL_TYPE="OS" MULTY_AGENT="N" USE_INSTREAM_JCL="N" VERSION_OPCODE="N" IS_CURRENT_VERSION="Y" VERSION_SERIAL="1" VERSION_HOST="CCBDPC20" CYCLIC_TOLERANCE="0" CYCLIC_TYPE="C" PARENT_FOLDER="SECG">
+            <VARIABLE NAME="%%PARM1" VALUE="/banktools/oper/11g/to_ccba_alo_report_hk.sh" />
+            <SHOUT WHEN="NOTOK" URGENCY="V" DEST="EM" MESSAGE="%%JOBNAME Ended Not ok, please refer the following message to action" />
+            <OUTCOND NAME="PSECGHK012D-TO-PSECGHK013D" ODATE="ODAT" SIGN="+" />
+            <ON STMT="*" CODE="NOTOK">
+                <DOMAIL URGENCY="V" DEST="isgdpcalert@asia.ccb.com" CC_DEST="isdproductioncontrol@asia.ccb.com" SUBJECT="%%JOBNAME Ended Not ok, please refer the following message to action" MESSAGE="0015Error Handling:00000100Ended not OK, Please inform Sec team support about &quot;Generate CCBAL ALO Spread Checking Report issue&quot;00000018Hostname: %%NODEID0024Application: %%APPLGROUP0019Jobname - %%JOBNAME0022Error Code: %%COMPSTAT" ATTACH_SYSOUT="Y" />
+            </ON>
+        </JOB>
+        <JOB JOBISN="11" APPLICATION="SECG" SUB_APPLICATION="HK" MEMNAME="ControlMOracle.sh" JOBNAME="PSECGHK013D" DESCRIPTION="Generate CCBAL ALO Spread Checking Report (HK)&#xD;&#xA;to_ccbi_alo_broker_report_hkt.sh (UAT-A), to_ccbi_alo_broker_report_hkw.sh (UAT-B)&#xD;&#xA;to_ccbi_alo_broker_report_hk.sh (PDN)" CREATED_BY="NBKPSN2" RUN_AS="nbscmjob" CRITICAL="0" TASKTYPE="Job" CYCLIC="0" NODEID="asihkdodb12v1" INTERVAL="00001M" MEMLIB="/banktools/oper" CONFIRM="0" DAYSCAL="HK_BANKDAY_MONtoFRI" RETRO="0" MAXWAIT="2" MAXRERUN="0" AUTOARCH="1" MAXDAYS="0" MAXRUNS="0" JAN="1" FEB="1" MAR="1" APR="1" MAY="1" JUN="1" JUL="1" AUG="1" SEP="1" OCT="1" NOV="1" DEC="1" DAYS_AND_OR="O" SHIFT="Ignore Job" SHIFTNUM="+00" SYSDB="1" IND_CYCLIC="S" CREATION_USER="NBKPSN2" CREATION_DATE="20180412" CREATION_TIME="170223" RULE_BASED_CALENDAR_RELATIONSHIP="O" APPL_TYPE="OS" MULTY_AGENT="N" USE_INSTREAM_JCL="N" VERSION_OPCODE="N" IS_CURRENT_VERSION="Y" VERSION_SERIAL="1" VERSION_HOST="CCBDPC20" CYCLIC_TOLERANCE="0" CYCLIC_TYPE="C" PARENT_FOLDER="SECG">
+            <VARIABLE NAME="%%PARM1" VALUE="/banktools/oper/11g/to_ccbi_alo_broker_report_hk.sh" />
+            <SHOUT WHEN="NOTOK" URGENCY="V" DEST="EM" MESSAGE="%%JOBNAME Ended Not ok, please refer the following message to action" />
+            <INCOND NAME="PSECGHK012D-TO-PSECGHK013D" ODATE="ODAT" AND_OR="A" />
+            <OUTCOND NAME="PSECGHK012D-TO-PSECGHK013D" ODATE="ODAT" SIGN="-" />
+            <OUTCOND NAME="PSECGHK013D-TO-PSECGHK003D_0850" ODATE="ODAT" SIGN="+" />
+            <ON STMT="*" CODE="NOTOK">
+                <DOMAIL URGENCY="V" DEST="isgdpcalert@asia.ccb.com" CC_DEST="isdproductioncontrol@asia.ccb.com" SUBJECT="%%JOBNAME Ended Not ok, please refer the following message to action" MESSAGE="0015Error Handling:00000107Ended not OK, Please inform Sec team support about &quot;Generate CCBAL ALO Spread Checking Broker Report issue&quot;00000018Hostname: %%NODEID0024Application: %%APPLGROUP0019Jobname - %%JOBNAME0022Error Code: %%COMPSTAT" ATTACH_SYSOUT="Y" />
+            </ON>
+        </JOB>
+        <JOB JOBISN="12" APPLICATION="SECG" SUB_APPLICATION="HK" MEMNAME="CALLAPI.bat" JOBNAME="PSECGHK003D_0850" DESCRIPTION="Transfer ALO Spread Checking  Report to Trader (HK)" CREATED_BY="NBKPSN2" RUN_AS="system" CRITICAL="0" TASKTYPE="Job" CYCLIC="0" NODEID="ASIHKDFTR00" INTERVAL="00001M" MEMLIB="D:\Apps\MOVEitCentralAPI\batch" CONFIRM="0" DAYSCAL="HK_BANKDAY_MONtoFRI" RETRO="0" MAXWAIT="2" MAXRERUN="0" AUTOARCH="1" MAXDAYS="0" MAXRUNS="0" JAN="1" FEB="1" MAR="1" APR="1" MAY="1" JUN="1" JUL="1" AUG="1" SEP="1" OCT="1" NOV="1" DEC="1" DAYS_AND_OR="O" SHIFT="Ignore Job" SHIFTNUM="+00" SYSDB="1" IND_CYCLIC="S" CREATION_USER="NBKPSN2" CREATION_DATE="20180412" CREATION_TIME="170223" RULE_BASED_CALENDAR_RELATIONSHIP="O" APPL_TYPE="OS" MULTY_AGENT="N" USE_INSTREAM_JCL="N" VERSION_OPCODE="N" IS_CURRENT_VERSION="Y" VERSION_SERIAL="1" VERSION_HOST="CCBDPC20" CYCLIC_TOLERANCE="0" CYCLIC_TYPE="C" PARENT_FOLDER="SECG">
+            <VARIABLE NAME="%%PARM1" VALUE="SECHKCONTRPT_11G" />
+            <SHOUT WHEN="NOTOK" URGENCY="V" DEST="EM" MESSAGE="%%JOBNAME Ended Not ok, please refer the following email to action" />
+            <SHOUT WHEN="LATETIME" TIME="0900" URGENCY="V" DEST="EM" MESSAGE="%%JOBNAME not completed yet at 09:00, please inform Sec team supoort about &quot;Late finish of transfer HK ALO Spread Checking Report issue&quot;" DAYSOFFSET="0" />
+            <SHOUT WHEN="LATETIME" TIME="0900" URGENCY="V" DEST="LATE_FIN_MAILOPS" MESSAGE="%%JOBNAME not completed yet at 09:00, please inform Sec team supoort about &quot;Late finish of transfer HK ALO Spread Checking Report issue&quot;" DAYSOFFSET="0" />
+            <INCOND NAME="PSECGHK013D-TO-PSECGHK003D_0850" ODATE="ODAT" AND_OR="A" />
+            <OUTCOND NAME="PSECGHK013D-TO-PSECGHK003D_0850" ODATE="ODAT" SIGN="-" />
+            <ON STMT="*" CODE="NOTOK">
+                <DOMAIL URGENCY="V" DEST="isgdpcalert@asia.ccb.com" CC_DEST="isdproductioncontrol@asia.ccb.com" SUBJECT="%%JOBNAME Ended Not ok, please refer the following email to action" MESSAGE="0017Error Handling : 00000148Ended not OK:  Re-run Job after 5 minutes. If task fail after re-run ,  inform Sec team support about &quot;Transfer HK ALO Spread Checking Report issue&quot;00000018Hostname: %%NODEID0024Application: %%APPLGROUP0019Jobname - %%JOBNAME0022Error Code: %%COMPSTAT" ATTACH_SYSOUT="Y" />
+            </ON>
+        </JOB>
+        <JOB JOBISN="13" APPLICATION="SECG" SUB_APPLICATION="MC" MEMNAME="ControlMOracle.sh" JOBNAME="PSECGMC002D" DESCRIPTION="Generate Contingency Report (MC)&#xD;&#xA;conmct.sh (UAT-A), conmcw.sh (UAT-B)&#xD;&#xA;conmc.sh (PDN)&#xD;&#xA;" CREATED_BY="NBKPSN2" RUN_AS="nbscmjob" CRITICAL="0" TASKTYPE="Job" CYCLIC="0" NODEID="asihkdodb12v1" INTERVAL="00001M" MEMLIB="/banktools/oper" CONFIRM="0" DAYSCAL="HK_BACKDAY" RETRO="0" MAXWAIT="2" MAXRERUN="0" AUTOARCH="1" MAXDAYS="0" MAXRUNS="0" TIMEFROM="0600" WEEKDAYS="1,2,3,4,0" JAN="1" FEB="1" MAR="1" APR="1" MAY="1" JUN="1" JUL="1" AUG="1" SEP="1" OCT="1" NOV="1" DEC="1" DAYS_AND_OR="A" SHIFT="Ignore Job" SHIFTNUM="+00" SYSDB="1" IND_CYCLIC="S" CREATION_USER="NBKPSN2" CREATION_DATE="20180412" CREATION_TIME="170223" RULE_BASED_CALENDAR_RELATIONSHIP="O" APPL_TYPE="OS" MULTY_AGENT="N" USE_INSTREAM_JCL="N" VERSION_OPCODE="N" IS_CURRENT_VERSION="Y" VERSION_SERIAL="1" VERSION_HOST="CCBDPC20" CYCLIC_TOLERANCE="0" CYCLIC_TYPE="C" PARENT_FOLDER="SECG">
+            <VARIABLE NAME="%%PARM1" VALUE=" /banktools/oper/11g/conmc.sh" />
+            <SHOUT WHEN="NOTOK" URGENCY="U" DEST="EM" MESSAGE="%%JOBNAME Ended Not ok, please refer the following email to action" />
+            <OUTCOND NAME="PSECGMC002D-TO-PSECGMC003D_0550" ODATE="ODAT" SIGN="+" />
+            <ON STMT="*" CODE="NOTOK">
+                <DOMAIL URGENCY="U" DEST="isgdpcalert@asia.ccb.com" CC_DEST="isdproductioncontrol@asia.ccb.com" SUBJECT="%%JOBNAME Ended Not ok, please refer the following email to action" MESSAGE="0016Error handling: 00000089Ended not OK, Please inform Sec team support about &quot;Generate MC Contingency Report issue&quot;00000018Hostname: %%NODEID0024Application: %%APPLGROUP0019Jobname - %%JOBNAME0022Error Code: %%COMPSTAT" ATTACH_SYSOUT="Y" />
+            </ON>
+        </JOB>
+        <JOB JOBISN="14" APPLICATION="SECG" SUB_APPLICATION="MC" MEMNAME="CALLAPI.bat" JOBNAME="PSECGMC003D_0550" DESCRIPTION="Transfer Contingency Report to Trader (MC)&#xD;&#xA;" CREATED_BY="cahk3aw" RUN_AS="system" CRITICAL="0" TASKTYPE="Job" CYCLIC="0" NODEID="ASIHKDFTR00" INTERVAL="00001M" MEMLIB="D:\Apps\MOVEitCentralAPI\batch" CONFIRM="0" DAYSCAL="HK_BACKDAY" RETRO="0" MAXWAIT="2" MAXRERUN="0" AUTOARCH="1" MAXDAYS="0" MAXRUNS="0" WEEKDAYS="1,2,3,4,0" JAN="1" FEB="1" MAR="1" APR="1" MAY="1" JUN="1" JUL="1" AUG="1" SEP="1" OCT="1" NOV="1" DEC="1" DAYS_AND_OR="A" SHIFT="Ignore Job" SHIFTNUM="+00" SYSDB="1" IND_CYCLIC="S" CREATION_USER="NBKPSN2" CREATION_DATE="20180412" CREATION_TIME="170223" RULE_BASED_CALENDAR_RELATIONSHIP="O" APPL_TYPE="OS" MULTY_AGENT="N" USE_INSTREAM_JCL="N" VERSION_OPCODE="N" IS_CURRENT_VERSION="Y" VERSION_SERIAL="1" VERSION_HOST="CCBDPC20" CYCLIC_TOLERANCE="0" CYCLIC_TYPE="C" PARENT_FOLDER="SECG">
+            <VARIABLE NAME="%%PARM1" VALUE="SECMCCONTRPT_11G" />
+            <SHOUT WHEN="NOTOK" URGENCY="V" DEST="EM" MESSAGE="%%JOBNAME Ended Not ok, please refer the following email to action" />
+            <INCOND NAME="PSECGMC002D-TO-PSECGMC003D_0550" ODATE="ODAT" AND_OR="A" />
+            <OUTCOND NAME="PSECGMC002D-TO-PSECGMC003D_0550" ODATE="ODAT" SIGN="-" />
+            <ON STMT="*" CODE="NOTOK">
+                <DOMAIL URGENCY="V" DEST="isgdpcalert@asia.ccb.com" CC_DEST="isdproductioncontrol@asia.ccb.com" SUBJECT="%%JOBNAME Ended Not ok, please refer the following email to action" MESSAGE="0017Error Handling : 00000138Ended not OK: Re-run Job after 5 minutes. If task fail after re-run , inform Sec team support about &quot;Transfer MC Contingency Report issue&quot;00000018Hostname: %%NODEID0024Application: %%APPLGROUP0019Jobname - %%JOBNAME0022Error Code: %%COMPSTAT" ATTACH_SYSOUT="Y" />
+            </ON>
+        </JOB>
+        <JOB JOBISN="15" APPLICATION="SECG" SUB_APPLICATION="MC" JOBNAME="PSECGMC005D" DESCRIPTION="Check readiness of Margin result file &#xA;&#xA;File watcher (Time limit: 150 minutes)&#xD;&#xA;File age : Minimal age = 1 minutes&#xA;MTS*YYYYMMDD_NOR.txt&#xD;&#xA;" CREATED_BY="CAHK3AW" RUN_AS="system" CRITICAL="0" TASKTYPE="Job" CYCLIC="0" NODEID="ASIHKDGAPDB" INTERVAL="00001M" CONFIRM="0" DAYSCAL="HK_BACKDAY" RETRO="0" MAXWAIT="2" MAXRERUN="0" AUTOARCH="1" MAXDAYS="0" MAXRUNS="0" TIMEFROM="0600" WEEKDAYS="1,2,3,4,0" JAN="1" FEB="1" MAR="1" APR="1" MAY="1" JUN="1" JUL="1" AUG="1" SEP="1" OCT="1" NOV="1" DEC="1" DAYS_AND_OR="A" SHIFT="Ignore Job" SHIFTNUM="+00" SYSDB="1" IND_CYCLIC="S" CREATION_USER="NBKPSN2" CREATION_DATE="20180412" CREATION_TIME="170223" CHANGE_USERID="NBKPSN2" CHANGE_DATE="20180921" CHANGE_TIME="173933" RULE_BASED_CALENDAR_RELATIONSHIP="O" APPL_TYPE="FileWatch" APPL_VER="W2K/XP" APPL_FORM="File Watcher" CM_VER="N/A" MULTY_AGENT="N" USE_INSTREAM_JCL="N" VERSION_OPCODE="N" IS_CURRENT_VERSION="Y" VERSION_SERIAL="3" VERSION_HOST="CCBDPC20" CYCLIC_TOLERANCE="0" CYCLIC_TYPE="C" PARENT_FOLDER="SECG">
+            <VARIABLE NAME="%%FileWatch-FILE_PATH" VALUE="D:\ibrokerdrive\wdrive\FromNGBatch\MTS*%%$DATE._NOR.txt" />
+            <VARIABLE NAME="%%FileWatch-MODE" VALUE="CREATE" />
+            <VARIABLE NAME="%%FileWatch-INT_FILE_SEARCHES" VALUE="60" />
+            <VARIABLE NAME="%%FileWatch-INT_FILESIZE_COMPARISON" VALUE="10" />
+            <VARIABLE NAME="%%FileWatch-NUM_OF_ITERATIONS" VALUE="3" />
+            <VARIABLE NAME="%%FileWatch-FILESIZE_WILDCARD" VALUE="N" />
+            <VARIABLE NAME="%%FileWatch-TIME_LIMIT" VALUE="150" />
+            <VARIABLE NAME="%%FileWatch-START_TIME" VALUE="0600" />
+            <VARIABLE NAME="%%FileWatch-STOP_TIME" VALUE="0" />
+            <VARIABLE NAME="%%FileWatch-MIN_AGE" VALUE="1MIN" />
+            <VARIABLE NAME="%%FileWatch-MAX_AGE" VALUE="NO_MAX_AGE" />
+            <VARIABLE NAME="%%FileWatch-MIN_DET_SIZE" VALUE="0B" />
+            <SHOUT WHEN="NOTOK" URGENCY="U" DEST="EM" MESSAGE="%%JOBNAME Ended Not ok, please refer the following email to action" />
+            <OUTCOND NAME="PSECGMC005D-TO-PSECGMC006D" ODATE="ODAT" SIGN="+" />
+            <ON STMT="*" CODE="NOTOK">
+                <DOMAIL URGENCY="U" DEST="isgdpcalert@asia.ccb.com" CC_DEST="isdproductioncontrol@asia.ccb.com" SUBJECT="%%JOBNAME Ended Not ok, please refer the following email to action" MESSAGE="0038Ended not OK,  Please check following:000000761. Check ML OG Jobsheet MoveIT job &quot;B14_MC_FMICBS_11G&quot; is completed or not. 000000402. If step 1 completed, re-run this job.000000893. If re-run fail, inform Sec team support about &quot;MC Margin result file readiness issue&quot;.000000454. Ignore this error during FULL-DAY TYPHOON.00000018Hostname: %%NODEID0024Application: %%APPLGROUP0019Jobname - %%JOBNAME0022Error Code: %%COMPSTAT" ATTACH_SYSOUT="Y" />
+            </ON>
+        </JOB>
+        <JOB JOBISN="16" APPLICATION="SECG" SUB_APPLICATION="MC" MEMNAME="FileTransfer.exe" JOBNAME="PSECGMC006D" DESCRIPTION="Run FileTransfer program&#xA;Transfer Margin Result file (MC)" CREATED_BY="CAHK3AW" RUN_AS="system" CRITICAL="0" TASKTYPE="Job" CYCLIC="0" NODEID="ASIHKDGAPDB" INTERVAL="00001M" MEMLIB="D:\ibrokerdrive\wdrive\Utilities\FileTransferJob\bin" CONFIRM="0" DAYSCAL="HK_BACKDAY" RETRO="0" MAXWAIT="2" MAXRERUN="0" AUTOARCH="1" MAXDAYS="0" MAXRUNS="0" WEEKDAYS="1,2,3,4,0" JAN="1" FEB="1" MAR="1" APR="1" MAY="1" JUN="1" JUL="1" AUG="1" SEP="1" OCT="1" NOV="1" DEC="1" DAYS_AND_OR="A" SHIFT="Ignore Job" SHIFTNUM="+00" SYSDB="1" IND_CYCLIC="S" CREATION_USER="NBKPSN2" CREATION_DATE="20180412" CREATION_TIME="170223" CHANGE_USERID="NBKPSN2" CHANGE_DATE="20180921" CHANGE_TIME="173933" RULE_BASED_CALENDAR_RELATIONSHIP="O" APPL_TYPE="OS" MULTY_AGENT="N" USE_INSTREAM_JCL="N" VERSION_OPCODE="N" IS_CURRENT_VERSION="Y" VERSION_SERIAL="2" VERSION_HOST="CCBDPC20" CYCLIC_TOLERANCE="0" CYCLIC_TYPE="C" PARENT_FOLDER="SECG">
+            <VARIABLE NAME="%%PARM1" VALUE="Margin_Result" />
+            <VARIABLE NAME="%%PARM2" VALUE="%%$DATE" />
+            <SHOUT WHEN="NOTOK" URGENCY="U" DEST="EM" MESSAGE="%%JOBNAME Ended Not ok, please refer the following email to action" />
+            <INCOND NAME="PSECGMC005D-TO-PSECGMC006D" ODATE="ODAT" AND_OR="A" />
+            <OUTCOND NAME="PSECGMC005D-TO-PSECGMC006D" ODATE="ODAT" SIGN="-" />
+            <OUTCOND NAME="PSECGMC006D-TO-PSECGMC099D" ODATE="ODAT" SIGN="+" />
+            <ON STMT="*" CODE="NOTOK">
+                <DOMAIL URGENCY="U" DEST="isgdpcalert@asia.ccb.com" CC_DEST="isdproductioncontrol@asia.ccb.com" SUBJECT="%%JOBNAME Ended Not ok, please refer the following email to action" MESSAGE="0016Error handling: 00000114Ended not OK, Please inform Sec team support about &quot;Transfer ICBS MC Margin result (To local common folder) issue&quot;00000018Hostname: %%NODEID0024Application: %%APPLGROUP0019Jobname - %%JOBNAME0022Error Code: %%COMPSTAT" ATTACH_SYSOUT="Y" />
+            </ON>
+            <ON STMT="*" CODE="OK">
+                <DOSHOUT URGENCY="R" MESSAGE="%%JOBNAME Ended OK,  Please go to  next step in ML OG Jobsheet &quot;Get download margin settlement Interface file to I-Broker&quot;" DEST="EM" />
+            </ON>
+        </JOB>
+        <JOB JOBISN="17" APPLICATION="SECG" SUB_APPLICATION="MC" MEMNAME="CALLAPI.bat" JOBNAME="PSECGMC009D" DESCRIPTION="Transfer Interest Rate and Exchange Rate from ICBS (MC)&#xD;&#xA;" CREATED_BY="cahk3aw" RUN_AS="system" CRITICAL="0" TASKTYPE="Job" CYCLIC="0" NODEID="ASIHKDFTR00" INTERVAL="00001M" MEMLIB="D:\Apps\MOVEitCentralAPI\batch" CONFIRM="0" DAYSCAL="HK_BANKDAY_MONtoFRI" RETRO="0" MAXWAIT="2" MAXRERUN="0" AUTOARCH="1" MAXDAYS="0" MAXRUNS="0" TIMEFROM="1730" JAN="1" FEB="1" MAR="1" APR="1" MAY="1" JUN="1" JUL="1" AUG="1" SEP="1" OCT="1" NOV="1" DEC="1" DAYS_AND_OR="O" SHIFT="Ignore Job" SHIFTNUM="+00" SYSDB="1" IND_CYCLIC="S" CREATION_USER="NBKPSN2" CREATION_DATE="20180412" CREATION_TIME="170223" CHANGE_USERID="NBKPSN2" CHANGE_DATE="20180924" CHANGE_TIME="151705" RULE_BASED_CALENDAR_RELATIONSHIP="O" APPL_TYPE="OS" MULTY_AGENT="N" USE_INSTREAM_JCL="N" VERSION_OPCODE="N" IS_CURRENT_VERSION="Y" VERSION_SERIAL="3" VERSION_HOST="CCBDPC20" CYCLIC_TOLERANCE="0" CYCLIC_TYPE="C" PARENT_FOLDER="SECG">
+            <VARIABLE NAME="%%PARM1" VALUE="B16_MC_RATE_FMICBS_11G" />
+            <SHOUT WHEN="NOTOK" URGENCY="V" DEST="EM" MESSAGE="%%JOBNAME Ended Not ok, please refer the following email to action" />
+            <ON STMT="*" CODE="NOTOK">
+                <DOMAIL URGENCY="V" DEST="isgdpcalert@asia.ccb.com" CC_DEST="isdproductioncontrol@asia.ccb.com" SUBJECT="%%JOBNAME Ended Not ok, please refer the following email to action" MESSAGE="0017Error Handling : 00000120Ended not OK, Please inform Sec team support about &quot;Transfer MC Interest Rate and Exchange Rate from ICBS MOVE-IT issue&quot;00000018Hostname: %%NODEID0024Application: %%APPLGROUP0019Jobname - %%JOBNAME0022Error Code: %%COMPSTAT" ATTACH_SYSOUT="Y" />
+            </ON>
+        </JOB>
+        <JOB JOBISN="18" APPLICATION="SECG" SUB_APPLICATION="MC" MEMNAME="CALLAPI.bat" JOBNAME="PSECGMC011D" DESCRIPTION="Transfer SEHK Exchange Rate from Download ExRate (HKEx website) (MC)&#xD;&#xA;" CREATED_BY="cahk3aw" RUN_AS="system" CRITICAL="0" TASKTYPE="Job" CYCLIC="0" NODEID="ASIHKDFTR00" INTERVAL="00001M" MEMLIB="D:\Apps\MOVEitCentralAPI\batch" CONFIRM="0" DAYSCAL="HK_BANKDAY_MONtoFRI" RETRO="0" MAXWAIT="2" MAXRERUN="0" AUTOARCH="1" MAXDAYS="0" MAXRUNS="0" TIMEFROM="1216" JAN="1" FEB="1" MAR="1" APR="1" MAY="1" JUN="1" JUL="1" AUG="1" SEP="1" OCT="1" NOV="1" DEC="1" DAYS_AND_OR="O" SHIFT="Ignore Job" SHIFTNUM="+00" SYSDB="1" IND_CYCLIC="S" CREATION_USER="NBKPSN2" CREATION_DATE="20180412" CREATION_TIME="170223" RULE_BASED_CALENDAR_RELATIONSHIP="O" APPL_TYPE="OS" MULTY_AGENT="N" USE_INSTREAM_JCL="N" VERSION_OPCODE="N" IS_CURRENT_VERSION="Y" VERSION_SERIAL="1" VERSION_HOST="CCBDPC20" CYCLIC_TOLERANCE="0" CYCLIC_TYPE="C" PARENT_FOLDER="SECG">
+            <VARIABLE NAME="%%PARM1" VALUE="DPC02_MC_RATE_FMHKEX_11G" />
+            <SHOUT WHEN="NOTOK" URGENCY="V" DEST="EM" MESSAGE="%%JOBNAME Ended Not ok, please refer the following email to action" />
+            <SHOUT WHEN="LATETIME" TIME="1230" URGENCY="V" DEST="LATE_FIN_MAILOPS" MESSAGE="%%JOBNAME job not finished at 12:30, please inform Sec team supoort about &quot;Late finish of transfer MC SEHK Exchange Rate from Download ExRate (HKEx webstite) issue&quot;" DAYSOFFSET="0" />
+            <ON STMT="*" CODE="NOTOK">
+                <DOMAIL URGENCY="V" DEST="isgdpcalert@asia.ccb.com" CC_DEST="isdproductioncontrol@asia.ccb.com" SUBJECT="%%JOBNAME Ended Not ok, please refer the following email to action" MESSAGE="0017Error Handling : 00000126Ended not OK, Please inform Sec team support about &quot;Transfer MC SEHK Exchange Rate from Download ExRate (HKEx webstite) issue&quot;00000018Hostname: %%NODEID0024Application: %%APPLGROUP0019Jobname - %%JOBNAME0022Error Code: %%COMPSTAT" ATTACH_SYSOUT="Y" />
+            </ON>
+        </JOB>
+        <JOB JOBISN="19" APPLICATION="SECG" SUB_APPLICATION="MC" MEMNAME="ControlMOracle.sh" JOBNAME="PSECGMC012D" DESCRIPTION="Generate CCBML ALO Spread Checking Report (MC)&#xD;&#xA;to_ccbm_alo_report_mct.sh (UAT-A), to_ccbm_alo_report_mcw.sh (UAT-B)&#xD;&#xA;to_ccbm_alo_report_mc.sh (PDN)" CREATED_BY="NBKPSN2" RUN_AS="nbscmjob" CRITICAL="0" TASKTYPE="Job" CYCLIC="0" NODEID="asihkdodb12v1" INTERVAL="00001M" MEMLIB="/banktools/oper" CONFIRM="0" DAYSCAL="HK_BANKDAY_MONtoFRI" RETRO="0" MAXWAIT="2" MAXRERUN="0" AUTOARCH="1" MAXDAYS="0" MAXRUNS="0" TIMEFROM="0845" JAN="1" FEB="1" MAR="1" APR="1" MAY="1" JUN="1" JUL="1" AUG="1" SEP="1" OCT="1" NOV="1" DEC="1" DAYS_AND_OR="O" SHIFT="Ignore Job" SHIFTNUM="+00" SYSDB="1" IND_CYCLIC="S" CREATION_USER="NBKPSN2" CREATION_DATE="20180412" CREATION_TIME="170223" RULE_BASED_CALENDAR_RELATIONSHIP="O" APPL_TYPE="OS" MULTY_AGENT="N" USE_INSTREAM_JCL="N" VERSION_OPCODE="N" IS_CURRENT_VERSION="Y" VERSION_SERIAL="1" VERSION_HOST="CCBDPC20" CYCLIC_TOLERANCE="0" CYCLIC_TYPE="C" PARENT_FOLDER="SECG">
+            <VARIABLE NAME="%%PARM1" VALUE="/banktools/oper/11g/to_ccbm_alo_report_mc.sh" />
+            <SHOUT WHEN="NOTOK" URGENCY="V" DEST="EM" MESSAGE="%%JOBNAME Ended Not ok, please refer the following message to action" />
+            <OUTCOND NAME="PSECGMC012D-TO-PSECGMC013D" ODATE="ODAT" SIGN="+" />
+            <ON STMT="*" CODE="NOTOK">
+                <DOMAIL URGENCY="V" DEST="isgdpcalert@asia.ccb.com" CC_DEST="isdproductioncontrol@asia.ccb.com" SUBJECT="%%JOBNAME Ended Not ok, please refer the following message to action" MESSAGE="0015Error Handling:00000100Ended not OK, Please inform Sec team support about &quot;Generate CCBML ALO Spread Checking Report issue&quot;00000018Hostname: %%NODEID0024Application: %%APPLGROUP0019Jobname - %%JOBNAME0022Error Code: %%COMPSTAT" ATTACH_SYSOUT="Y" />
+            </ON>
+        </JOB>
+        <JOB JOBISN="20" APPLICATION="SECG" SUB_APPLICATION="MC" MEMNAME="ControlMOracle.sh" JOBNAME="PSECGMC013D" DESCRIPTION="Generate CCBML ALO Spread Checking Report (MC)&#xD;&#xA;to_ccba_alo_broker_report_mct.sh (UAT-A), to_ccba_alo_broker_report_mcw.sh (UAT-B)&#xD;&#xA;to_ccba_alo_broker_report_mc.sh (PDN)" CREATED_BY="NBKPSN2" RUN_AS="nbscmjob" CRITICAL="0" TASKTYPE="Job" CYCLIC="0" NODEID="asihkdodb12v1" INTERVAL="00001M" MEMLIB="/banktools/oper" CONFIRM="0" DAYSCAL="HK_BANKDAY_MONtoFRI" RETRO="0" MAXWAIT="2" MAXRERUN="0" AUTOARCH="1" MAXDAYS="0" MAXRUNS="0" JAN="1" FEB="1" MAR="1" APR="1" MAY="1" JUN="1" JUL="1" AUG="1" SEP="1" OCT="1" NOV="1" DEC="1" DAYS_AND_OR="O" SHIFT="Ignore Job" SHIFTNUM="+00" SYSDB="1" IND_CYCLIC="S" CREATION_USER="NBKPSN2" CREATION_DATE="20180412" CREATION_TIME="170223" RULE_BASED_CALENDAR_RELATIONSHIP="O" APPL_TYPE="OS" MULTY_AGENT="N" USE_INSTREAM_JCL="N" VERSION_OPCODE="N" IS_CURRENT_VERSION="Y" VERSION_SERIAL="1" VERSION_HOST="CCBDPC20" CYCLIC_TOLERANCE="0" CYCLIC_TYPE="C" PARENT_FOLDER="SECG">
+            <VARIABLE NAME="%%PARM1" VALUE="/banktools/oper/11g/to_ccba_alo_broker_report_mc.sh" />
+            <SHOUT WHEN="NOTOK" URGENCY="V" DEST="EM" MESSAGE="%%JOBNAME Ended Not ok, please refer the following message to action" />
+            <INCOND NAME="PSECGMC012D-TO-PSECGMC013D" ODATE="ODAT" AND_OR="A" />
+            <OUTCOND NAME="PSECGMC012D-TO-PSECGMC013D" ODATE="ODAT" SIGN="-" />
+            <OUTCOND NAME="PSECGMC013D-TO-PSECGMC003D_0850" ODATE="ODAT" SIGN="+" />
+            <ON STMT="*" CODE="NOTOK">
+                <DOMAIL URGENCY="V" DEST="isgdpcalert@asia.ccb.com" CC_DEST="isdproductioncontrol@asia.ccb.com" SUBJECT="%%JOBNAME Ended Not ok, please refer the following message to action" MESSAGE="0015Error Handling:00000107Ended not OK, Please inform Sec team support about &quot;Generate CCBML ALO Spread Checking Broker Report issue&quot;00000018Hostname: %%NODEID0024Application: %%APPLGROUP0019Jobname - %%JOBNAME0022Error Code: %%COMPSTAT" ATTACH_SYSOUT="Y" />
+            </ON>
+        </JOB>
+        <JOB JOBISN="21" APPLICATION="SECG" SUB_APPLICATION="MC" MEMNAME="CALLAPI.bat" JOBNAME="PSECGMC003D_0850" DESCRIPTION="Transfer ALO Spread Checking Report to Trader (MC)" CREATED_BY="NBKPSN2" RUN_AS="system" CRITICAL="0" TASKTYPE="Job" CYCLIC="0" NODEID="ASIHKDFTR00" INTERVAL="00001M" MEMLIB="D:\Apps\MOVEitCentralAPI\batch" CONFIRM="0" DAYSCAL="HK_BANKDAY_MONtoFRI" RETRO="0" MAXWAIT="2" MAXRERUN="0" AUTOARCH="1" MAXDAYS="0" MAXRUNS="0" JAN="1" FEB="1" MAR="1" APR="1" MAY="1" JUN="1" JUL="1" AUG="1" SEP="1" OCT="1" NOV="1" DEC="1" DAYS_AND_OR="O" SHIFT="Ignore Job" SHIFTNUM="+00" SYSDB="1" IND_CYCLIC="S" CREATION_USER="NBKPSN2" CREATION_DATE="20180412" CREATION_TIME="170223" RULE_BASED_CALENDAR_RELATIONSHIP="O" APPL_TYPE="OS" MULTY_AGENT="N" USE_INSTREAM_JCL="N" VERSION_OPCODE="N" IS_CURRENT_VERSION="Y" VERSION_SERIAL="1" VERSION_HOST="CCBDPC20" CYCLIC_TOLERANCE="0" CYCLIC_TYPE="C" PARENT_FOLDER="SECG">
+            <VARIABLE NAME="%%PARM1" VALUE="SECMCCONTRPT_11G" />
+            <SHOUT WHEN="NOTOK" URGENCY="V" DEST="EM" MESSAGE="%%JOBNAME Ended Not ok, please refer the following email to action" />
+            <SHOUT WHEN="LATETIME" TIME="0900" URGENCY="V" DEST="EM" MESSAGE="%%JOBNAME not completed yet at 09:00, please inform Sec team supoort about &quot;Late finish of transfer MC ALO Spread Report issue&quot;" DAYSOFFSET="0" />
+            <SHOUT WHEN="LATETIME" TIME="0900" URGENCY="V" DEST="LATE_FIN_MAILOPS" MESSAGE="%%JOBNAME not completed yet at 09:00, please inform Sec team supoort about &quot;Late finish of transfer MC ALO Spread Report issue&quot;" DAYSOFFSET="0" />
+            <INCOND NAME="PSECGMC013D-TO-PSECGMC003D_0850" ODATE="ODAT" AND_OR="A" />
+            <OUTCOND NAME="PSECGMC013D-TO-PSECGMC003D_0850" ODATE="ODAT" SIGN="-" />
+            <ON STMT="*" CODE="NOTOK">
+                <DOMAIL URGENCY="V" DEST="isgdpcalert@asia.ccb.com" CC_DEST="isdproductioncontrol@asia.ccb.com" SUBJECT="%%JOBNAME Ended Not ok, please refer the following email to action" MESSAGE="0017Error Handling : 00000147 Ended not OK: Re-run Job after 5 minutes. If task fail after re-run , inform Sec team support about &quot;Transfer MC ALO Spread Checking Report issue&quot;00000018Hostname: %%NODEID0024Application: %%APPLGROUP0019Jobname - %%JOBNAME0022Error Code: %%COMPSTAT" ATTACH_SYSOUT="Y" />
+            </ON>
+        </JOB>
+        <JOB JOBISN="22" APPLICATION="SECG" SUB_APPLICATION="HK" MEMNAME="CALLAPI.bat" JOBNAME="PSECGHK001D" DESCRIPTION="Transfer Reuters DSS file from DMZ Zone to iBroker&#xD;&#xA;" CREATED_BY="emuser" RUN_AS="system" CRITICAL="0" TASKTYPE="Job" CYCLIC="0" NODEID="asihkdftr00" INTERVAL="00001M" MEMLIB="D:\Apps\MOVEitCentralAPI\batch" CONFIRM="0" RETRO="0" MAXWAIT="2" MAXRERUN="0" AUTOARCH="1" MAXDAYS="0" MAXRUNS="0" TIMEFROM="0630" WEEKDAYS="1,2,3,4,0" JAN="1" FEB="1" MAR="1" APR="1" MAY="1" JUN="1" JUL="1" AUG="1" SEP="1" OCT="1" NOV="1" DEC="1" DAYS_AND_OR="O" SHIFT="Ignore Job" SHIFTNUM="+00" SYSDB="1" IND_CYCLIC="S" CREATION_USER="NBKPSN2" CREATION_DATE="20180412" CREATION_TIME="170836" CHANGE_USERID="NBKPSN2" CHANGE_DATE="20180926" CHANGE_TIME="102855" RULE_BASED_CALENDAR_RELATIONSHIP="O" APPL_TYPE="OS" MULTY_AGENT="N" ACTIVE_TILL="20180925" USE_INSTREAM_JCL="N" VERSION_OPCODE="N" IS_CURRENT_VERSION="Y" VERSION_SERIAL="2" VERSION_HOST="CCBDPC20" CYCLIC_TOLERANCE="0" CYCLIC_TYPE="C" PARENT_FOLDER="SECG">
+            <VARIABLE NAME="%%PARM1" VALUE="B69_HKFMREU_11G" />
+            <SHOUT WHEN="NOTOK" URGENCY="V" DEST="EM" MESSAGE="%%JOBNAME Ended Not OK, Please inform Sec team support about &quot;Reuters DSS file transfer issue&quot;" />
+            <ON STMT="*" CODE="NOTOK">
+                <DOMAIL URGENCY="V" DEST="isgdpcalert@asia.ccb.com" CC_DEST="isdproductioncontrol@asia.ccb.com" SUBJECT="%%JOBNAME Ended Not OK, Please inform Sec team support about &quot;Reuters DSS file transfer issue&quot;" MESSAGE="0018Hostname: %%NODEID0024Application: %%APPLGROUP0019Jobname - %%JOBNAME0022Error Code: %%COMPSTAT" ATTACH_SYSOUT="Y" />
+            </ON>
+        </JOB>
+        <JOB JOBISN="23" APPLICATION="SECG" SUB_APPLICATION="MC" MEMNAME="FileRename.bat" JOBNAME="PSECGMC099D" DESCRIPTION="Rename margin result file&#xD;&#xA;&#xD;&#xA;Rename from MTS.A0331PA01_HKD_D_YYYYMMDD_NOR.txt to MTS.A0331PA01_HKD_D_YYYYMMDD_NOR.ANS" CREATED_BY="NBKPSN2" RUN_AS="system" CRITICAL="0" TASKTYPE="Job" CYCLIC="0" NODEID="ASIHKDGAPDB" INTERVAL="00001M" MEMLIB="D:\ibrokerdrive\wdrive\Utilities" CONFIRM="0" DAYSCAL="HK_BACKDAY" RETRO="0" MAXWAIT="2" MAXRERUN="0" AUTOARCH="1" MAXDAYS="0" MAXRUNS="0" WEEKDAYS="1,2,3,4,0" JAN="1" FEB="1" MAR="1" APR="1" MAY="1" JUN="1" JUL="1" AUG="1" SEP="1" OCT="1" NOV="1" DEC="1" DAYS_AND_OR="A" SHIFT="Ignore Job" SHIFTNUM="+00" SYSDB="1" IND_CYCLIC="S" CREATION_USER="NBKPSN2" CREATION_DATE="20180921" CREATION_TIME="173933" CHANGE_USERID="CAHK3AW" CHANGE_DATE="20181019" CHANGE_TIME="121132" RULE_BASED_CALENDAR_RELATIONSHIP="O" APPL_TYPE="OS" MULTY_AGENT="N" USE_INSTREAM_JCL="N" VERSION_OPCODE="N" IS_CURRENT_VERSION="Y" VERSION_SERIAL="3" VERSION_HOST="C005056BE0008" CYCLIC_TOLERANCE="0" CYCLIC_TYPE="C" PARENT_FOLDER="SECG">
+            <VARIABLE NAME="%%PARM1" VALUE="D:\ibrokerdrive\wdrive\IBSConfig\Day_End_Files\MTS.A0331PA01_HKD_D_%%$DATE._NOR.txt" />
+            <VARIABLE NAME="%%PARM2" VALUE="MTS.A0331PA01_HKD_D_%%$DATE._NOR.ANS" />
+            <SHOUT WHEN="NOTOK" URGENCY="V" DEST="EM" MESSAGE="%%JOBNAME Ended Not ok, please refer the following email to action" />
+            <INCOND NAME="PSECGMC006D-TO-PSECGMC099D" ODATE="ODAT" AND_OR="A" />
+            <OUTCOND NAME="PSECGMC006D-TO-PSECGMC099D" ODATE="ODAT" SIGN="-" />
+            <ON STMT="*" CODE="NOTOK">
+                <DOMAIL URGENCY="V" DEST="isgdpcalert@asia.ccb.com" CC_DEST="isdproductioncontrol@asia.ccb.com" SUBJECT="%%JOBNAME Ended Not ok, please refer the following email to action" MESSAGE="0016Error handling: 00000095Case A) Ended not OK, Please inform Sec team support about &quot;MC Margin Result file rename issue&quot;000000000018Hostname: %%NODEID0024Application: %%APPLGROUP0019Jobname - %%JOBNAME0022Error Code: %%COMPSTAT" ATTACH_SYSOUT="Y" />
+            </ON>
+            <ON STMT="*" CODE="OK">
+                <DOSHOUT URGENCY="R" MESSAGE="%%JOBNAME Ended OK, Please go to  next step in ML OG Jobsheet &quot;Get download margin settlement Interface file to ML I-Broker&quot;" DEST="EM" />
+            </ON>
+        </JOB>
+        <JOB JOBISN="24" APPLICATION="SECG" SUB_APPLICATION="HK" MEMNAME="CALLAPI.bat" JOBNAME="PSECGHK019D" DESCRIPTION="Transfer SAO Source from PPC (HK)" CREATED_BY="NBKPSN2" RUN_AS="system" CRITICAL="0" TASKTYPE="Job" CYCLIC="0" NODEID="ASIHKDFTR00" INTERVAL="00001M" MEMLIB="D:\Apps\MOVEitCentralAPI\batch" CONFIRM="0" DAYSCAL="HK_BACKDAY" RETRO="0" MAXWAIT="2" MAXRERUN="0" AUTOARCH="1" MAXDAYS="0" MAXRUNS="0" TIMEFROM="0605" WEEKDAYS="1,2,3,4,0" JAN="1" FEB="1" MAR="1" APR="1" MAY="1" JUN="1" JUL="1" AUG="1" SEP="1" OCT="1" NOV="1" DEC="1" DAYS_AND_OR="A" SHIFT="Ignore Job" SHIFTNUM="+00" SYSDB="1" IND_CYCLIC="S" CREATION_USER="nbsctlm" CREATION_DATE="20190110" CREATION_TIME="162028" RULE_BASED_CALENDAR_RELATIONSHIP="O" APPL_TYPE="OS" MULTY_AGENT="N" ACTIVE_FROM="20190112" USE_INSTREAM_JCL="N" VERSION_OPCODE="N" IS_CURRENT_VERSION="Y" VERSION_SERIAL="1" VERSION_HOST="C005056BE0006" CYCLIC_TOLERANCE="0" CYCLIC_TYPE="C" PARENT_FOLDER="SECG">
+            <VARIABLE NAME="%%PARM1" VALUE="B17A_HK_FMICBS_CUW08888_11G" />
+            <SHOUT WHEN="NOTOK" URGENCY="V" DEST="EM" MESSAGE="%%JOBNAME Ended Not ok, please refer the following email to action" />
+            <OUTCOND NAME="PSECGHK019D-TO-PSECGHK020D" ODATE="ODAT" SIGN="+" />
+            <ON STMT="*" CODE="NOTOK">
+                <DOMAIL URGENCY="V" DEST="isgdpcalert@asia.ccb.com" CC_DEST="isdproductioncontrol@asia.ccb.com" SUBJECT="%%JOBNAME Ended Not ok, please refer the following email to action" MESSAGE="0016Error handling: 00000132Ended not OK: Re-run Job. If task fail after re-run , inform Sec team support about &quot;HK Transfer SAO Source from PPC (MoveIT) issue&quot;00000018Hostname: %%NODEID0024Application: %%APPLGROUP0019Jobname - %%JOBNAME0022Error Code: %%COMPSTAT" ATTACH_SYSOUT="Y" />
+            </ON>
+        </JOB>
+        <JOB JOBISN="25" APPLICATION="SECG" SUB_APPLICATION="HK" MEMNAME="FileTransfer.exe" JOBNAME="PSECGHK020D" DESCRIPTION="Transfer SAO Source file to local folder (HK)" CREATED_BY="NBKPSN2" RUN_AS="system" CRITICAL="0" TASKTYPE="Job" CYCLIC="0" NODEID="ASIHKDGAPDA" INTERVAL="00001M" MEMLIB="D:\ibrokerdrive\wdrive\Utilities\FileTransferJob\bin" CONFIRM="0" DAYSCAL="HK_BACKDAY" RETRO="0" MAXWAIT="2" MAXRERUN="0" AUTOARCH="1" MAXDAYS="0" MAXRUNS="0" WEEKDAYS="1,2,3,4,0" JAN="1" FEB="1" MAR="1" APR="1" MAY="1" JUN="1" JUL="1" AUG="1" SEP="1" OCT="1" NOV="1" DEC="1" DAYS_AND_OR="A" SHIFT="Ignore Job" SHIFTNUM="+00" SYSDB="1" IND_CYCLIC="S" CREATION_USER="nbsctlm" CREATION_DATE="20190110" CREATION_TIME="162028" RULE_BASED_CALENDAR_RELATIONSHIP="O" APPL_TYPE="OS" MULTY_AGENT="N" ACTIVE_FROM="20190112" USE_INSTREAM_JCL="N" VERSION_OPCODE="N" IS_CURRENT_VERSION="Y" VERSION_SERIAL="1" VERSION_HOST="C005056BE0006" CYCLIC_TOLERANCE="0" CYCLIC_TYPE="C" PARENT_FOLDER="SECG">
+            <VARIABLE NAME="%%PARM1" VALUE="SAO_Src" />
+            <VARIABLE NAME="%%PARM2" VALUE="%%$DATE" />
+            <SHOUT WHEN="NOTOK" URGENCY="V" DEST="EM" MESSAGE="%%JOBNAME Ended Not ok, please refer the following email to action" />
+            <SHOUT WHEN="OK" URGENCY="R" DEST="EM" MESSAGE="Please go to  next step &quot;Import SAO Source File&quot; in AL OG Jobsheet &quot;&quot;" />
+            <INCOND NAME="PSECGHK019D-TO-PSECGHK020D" ODATE="ODAT" AND_OR="A" />
+            <OUTCOND NAME="PSECGHK020D-TO-PSECGHK021D" ODATE="ODAT" SIGN="+" />
+            <OUTCOND NAME="PSECGHK019D-TO-PSECGHK020D" ODATE="ODAT" SIGN="-" />
+            <ON STMT="*" CODE="NOTOK">
+                <DOMAIL URGENCY="V" DEST="isgdpcalert@asia.ccb.com" CC_DEST="isdproductioncontrol@asia.ccb.com" SUBJECT="%%JOBNAME Ended Not ok, please refer the following email to action" MESSAGE="0016Error handling: 00000094Case A) Ended not OK, Please inform Sec team support about &quot;HK SAO Source File Transfer Issue&quot;00000020Case B)  Ended OK:  0043Urgency: &quot;Regular&quot;  with Alerts Window ONLY0078Message: Please go to  next step &quot;Import SAO Source File&quot; in AL OG Jobsheet &quot;&quot;00000018Hostname: %%NODEID0024Application: %%APPLGROUP0019Jobname - %%JOBNAME0022Error Code: %%COMPSTAT" ATTACH_SYSOUT="Y" />
+            </ON>
+            <ON STMT="*" CODE="OK">
+                <DOMAIL URGENCY="R" DEST="isgdpcalert@asia.ccb.com" CC_DEST="isdproductioncontrol@asia.ccb.com" SUBJECT="%%JOBNAME Ended ok,  Please go to  next step &quot;Import SAO Source File&quot; in AL OG Jobsheet &quot;&quot;" MESSAGE="0018Hostname: %%NODEID0024Application: %%APPLGROUP0019Jobname - %%JOBNAME0022Error Code: %%COMPSTAT" ATTACH_SYSOUT="N" />
+            </ON>
+        </JOB>
+        <JOB JOBISN="26" APPLICATION="SECG" SUB_APPLICATION="HK" JOBNAME="PSECGHK021D" DESCRIPTION="Check SAO Report file ready (HK)&#xD;&#xA;&#xD;&#xA;File watcher (Time Limit 30 minutes)&#xD;&#xA;File age : Minimal age = 1 minutes&#xD;&#xA;D:\ibrokerdrive\wdrive\IBSConfig\Day_End_Files\YYYYMM\YYYYMMDD\SECCH01300[YYYYMMDD].csv&#xD;&#xA;(%%Date = Run Day)&#xD;&#xA;&#xD;&#xA;" CREATED_BY="NBKPSN2" RUN_AS="system" CRITICAL="0" TASKTYPE="Job" CYCLIC="0" NODEID="ASIHKDGAPDA" INTERVAL="00001M" CONFIRM="0" DAYSCAL="HK_BACKDAY" RETRO="0" MAXWAIT="2" MAXRERUN="0" AUTOARCH="1" MAXDAYS="0" MAXRUNS="0" WEEKDAYS="1,2,3,4,0" JAN="1" FEB="1" MAR="1" APR="1" MAY="1" JUN="1" JUL="1" AUG="1" SEP="1" OCT="1" NOV="1" DEC="1" DAYS_AND_OR="A" SHIFT="Ignore Job" SHIFTNUM="+00" SYSDB="1" IND_CYCLIC="S" CREATION_USER="nbsctlm" CREATION_DATE="20190110" CREATION_TIME="162028" RULE_BASED_CALENDAR_RELATIONSHIP="O" APPL_TYPE="FileWatch" APPL_VER="W2K/XP" APPL_FORM="File Watcher" CM_VER="N/A" MULTY_AGENT="N" ACTIVE_FROM="20190112" USE_INSTREAM_JCL="N" VERSION_OPCODE="N" IS_CURRENT_VERSION="Y" VERSION_SERIAL="1" VERSION_HOST="C005056BE0006" CYCLIC_TOLERANCE="0" CYCLIC_TYPE="C" PARENT_FOLDER="SECG">
+            <VARIABLE NAME="%%FileWatch-FILE_PATH" VALUE="D:\ibrokerdrive\wdrive\IBSConfig\Day_End_Files\%%$YEAR.%%MONTH\%%$DATE\SECCH01300[%%$DATE.].csv" />
+            <VARIABLE NAME="%%FileWatch-MODE" VALUE="CREATE" />
+            <VARIABLE NAME="%%FileWatch-MIN_DET_SIZE" VALUE="0B" />
+            <VARIABLE NAME="%%FileWatch-INT_FILE_SEARCHES" VALUE="60" />
+            <VARIABLE NAME="%%FileWatch-INT_FILESIZE_COMPARISON" VALUE="10" />
+            <VARIABLE NAME="%%FileWatch-NUM_OF_ITERATIONS" VALUE="3" />
+            <VARIABLE NAME="%%FileWatch-FILESIZE_WILDCARD" VALUE="N" />
+            <VARIABLE NAME="%%FileWatch-TIME_LIMIT" VALUE="30" />
+            <VARIABLE NAME="%%FileWatch-START_TIME" VALUE="NOW" />
+            <VARIABLE NAME="%%FileWatch-STOP_TIME" VALUE="0" />
+            <VARIABLE NAME="%%FileWatch-MIN_AGE" VALUE="1MIN" />
+            <VARIABLE NAME="%%FileWatch-MAX_AGE" VALUE="NO_MAX_AGE" />
+            <SHOUT WHEN="NOTOK" URGENCY="V" DEST="EM" MESSAGE="%%JOBNAME Ended Not ok, please refer the following email to action" />
+            <INCOND NAME="PSECGHK020D-TO-PSECGHK021D" ODATE="ODAT" AND_OR="A" />
+            <OUTCOND NAME="PSECGHK021D-TO-PSECGHK022D" ODATE="ODAT" SIGN="+" />
+            <OUTCOND NAME="PSECGHK020D-TO-PSECGHK021D" ODATE="ODAT" SIGN="-" />
+            <ON STMT="*" CODE="NOTOK">
+                <DOMAIL URGENCY="V" DEST="isgdpcalert@asia.ccb.com" CC_DEST="isdproductioncontrol@asia.ccb.com" SUBJECT="%%JOBNAME Ended Not ok, please refer the following email to action" MESSAGE="0037Ended not OK: Please check following:000000781. Check AL iBroker Jobsheet task &quot;Import SAO Source file&quot; is completed or not00392. If step 1 completed, re-run this job00883. If re-run fails,  inform Sec team support about &quot;HK SAO Report file readiness issue&quot; 0028order file readiness issue&quot; 00000018Hostname: %%NODEID0024Application: %%APPLGROUP0019Jobname - %%JOBNAME0022Error Code: %%COMPSTAT" ATTACH_SYSOUT="Y" />
+            </ON>
+        </JOB>
+        <JOB JOBISN="27" APPLICATION="SECG" SUB_APPLICATION="HK" MEMNAME="FileTransfer.exe" JOBNAME="PSECGHK022D" DESCRIPTION="Transfer SAO Report file to local folder (HK)" CREATED_BY="NBKPSN2" RUN_AS="system" CRITICAL="0" TASKTYPE="Job" CYCLIC="0" NODEID="ASIHKDGAPDA" INTERVAL="00001M" MEMLIB="D:\ibrokerdrive\wdrive\Utilities\FileTransferJob\bin" CONFIRM="0" DAYSCAL="HK_BACKDAY" RETRO="0" MAXWAIT="2" MAXRERUN="0" AUTOARCH="1" MAXDAYS="0" MAXRUNS="0" WEEKDAYS="1,2,3,4,0" JAN="1" FEB="1" MAR="1" APR="1" MAY="1" JUN="1" JUL="1" AUG="1" SEP="1" OCT="1" NOV="1" DEC="1" DAYS_AND_OR="A" SHIFT="Ignore Job" SHIFTNUM="+00" SYSDB="1" IND_CYCLIC="S" CREATION_USER="nbsctlm" CREATION_DATE="20190110" CREATION_TIME="162028" RULE_BASED_CALENDAR_RELATIONSHIP="O" APPL_TYPE="OS" MULTY_AGENT="N" ACTIVE_FROM="20190112" USE_INSTREAM_JCL="N" VERSION_OPCODE="N" IS_CURRENT_VERSION="Y" VERSION_SERIAL="1" VERSION_HOST="C005056BE0006" CYCLIC_TOLERANCE="0" CYCLIC_TYPE="C" PARENT_FOLDER="SECG">
+            <VARIABLE NAME="%%PARM1" VALUE="SAO_Rpt" />
+            <VARIABLE NAME="%%PARM2" VALUE="%%$DATE" />
+            <SHOUT WHEN="NOTOK" URGENCY="V" DEST="EM" MESSAGE="%%JOBNAME Ended Not ok, please refer the following email to action" />
+            <SHOUT WHEN="OK" URGENCY="R" DEST="EM" MESSAGE=" Please go to next step &quot;Transfer SAO Report file&quot; in AL OG Jobsheet" />
+            <INCOND NAME="PSECGHK021D-TO-PSECGHK022D" ODATE="ODAT" AND_OR="A" />
+            <OUTCOND NAME="PSECGHK021D-TO-PSECGHK022D" ODATE="ODAT" SIGN="-" />
+            <ON STMT="*" CODE="NOTOK">
+                <DOMAIL URGENCY="V" DEST="isgdpcalert@asia.ccb.com" CC_DEST="isdproductioncontrol@asia.ccb.com" SUBJECT="%%JOBNAME Ended Not ok, please refer the following email to action" MESSAGE="0016Error handling: 00000143Case A) Ended not OK: Re-run Job. If task fail after re-run , inform Sec team support about &quot;Transfer HK SAO Report file to local folder issue&quot;0017Case B) Ended OK:0042Urgency: &quot;Regular&quot; with Alerts Window ONLY0076Message: Please go to next step &quot;Transfer SAO Source file&quot; in AL OG Jobsheet00000018Hostname: %%NODEID0024Application: %%APPLGROUP0019Jobname - %%JOBNAME0022Error Code: %%COMPSTAT" ATTACH_SYSOUT="Y" />
+            </ON>
+            <ON STMT="*" CODE="OK">
+                <DOMAIL URGENCY="R" DEST="isgdpcalert@asia.ccb.com" CC_DEST="isdproductioncontrol@asia.ccb.com" SUBJECT="%%JOBNAME Ended ok, &quot;Please go to next step &quot;Transfer SAO Report file&quot; in AL OG Jobsheet&quot;&quot;" MESSAGE="0018Hostname: %%NODEID0024Application: %%APPLGROUP0019Jobname - %%JOBNAME0022Error Code: %%COMPSTAT" ATTACH_SYSOUT="D" />
+            </ON>
+        </JOB>
+    </FOLDER>
+</DEFTABLE>
