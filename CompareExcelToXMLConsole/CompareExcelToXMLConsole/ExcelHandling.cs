@@ -41,7 +41,7 @@ namespace CompareExcelToXML
 
                 string cellContent;
                 int iRowCount = worksheet.UsedRange.Rows.Count;
-                int iColCount = worksheet.UsedRange.Columns.Count;
+                int iColCount = worksheet.UsedRange.Columns.Count - 2; //default read two more columns
                 Excel.Range range;
 
                 //Read the Column definition - start
@@ -81,8 +81,10 @@ namespace CompareExcelToXML
                         //}
                     }
 
-                    //if (iRow != 1)
-                    dt.Rows.Add(dr);
+                    if (dr.ItemArray[0] != "") 
+                    {
+                        dt.Rows.Add(dr);
+                    }
                 }
                 //Read the data - end
 
