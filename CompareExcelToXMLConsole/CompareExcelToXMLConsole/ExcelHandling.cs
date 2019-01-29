@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Linq;
 using System.Text;
@@ -41,7 +42,7 @@ namespace CompareExcelToXML
 
                 string cellContent;
                 int iRowCount = worksheet.UsedRange.Rows.Count;
-                int iColCount = worksheet.UsedRange.Columns.Count - 2; //default read two more columns
+                int iColCount = worksheet.UsedRange.Columns.Count - 2; //default read two more column
                 Excel.Range range;
 
                 //Read the Column definition - start
@@ -53,7 +54,7 @@ namespace CompareExcelToXML
                     dc = new DataColumn();
                     dc.DataType = System.Type.GetType("System.String");
                     dc.ColumnName = range.Text.ToString().Trim();
-                    Console.WriteLine(ColumnID + ": " + dc.ColumnName);
+                    //Console.WriteLine(ColumnID + ": " + dc.ColumnName);
                     dt.Columns.Add(dc);
 
                     range = (Excel.Range)worksheet.Cells[1, ++ColumnID];
@@ -66,22 +67,27 @@ namespace CompareExcelToXML
                     DataRow dr = dt.NewRow();
 
                     for (int iCol = 1; iCol <= iColCount; iCol++)
-                    {   
+                    {
                         range = (Excel.Range)worksheet.Cells[iRow, iCol];
 
                         cellContent = (range.Value2 == null) ? "" : range.Text.ToString();
 
                         //if (iRow == 1)
                         //{
-                        //    dt.Columns.Add(cellContent);
+                        //dt.Columns.Add(cellContent);
                         //}
                         //else
                         //{
-                        dr[iCol - 1] = cellContent;
+                        //dr[iCol - 1] = cellContent;
                         //}
+
+                        if (iCol == 4)
+                            dr[iCol - 1] = cellContent.Replace("\n", "");
+                        else
+                            dr[iCol - 1] = cellContent;
                     }
 
-                    if (dr.ItemArray[0] != "") 
+                    if (dr.ItemArray[0].ToString() != "" || dr.ItemArray[3].ToString() != "")
                     {
                         dt.Rows.Add(dr);
                     }
@@ -105,6 +111,84 @@ namespace CompareExcelToXML
                 app = null;
                 GC.Collect();
                 GC.WaitForPendingFinalizers();
+            }
+        }
+
+        public void ToExcelSheet(DataSet ds, string fileName)
+        {
+            Excel.Application appExcel = new Excel.Application();
+            Excel.Workbook workbookData = null;
+            Excel.Worksheet worksheetData;
+            Excel.Range range;
+            try
+            {
+                workbookData = appExcel.Workbooks.Add(System.Reflection.Missing.Value);
+                appExcel.DisplayAlerts = false;//不顯示警告
+                //xlApp.Visible = true;//excel是否可見
+                //
+                //for (int i = workbookData.Worksheets.Count; i > 0; i--)
+                //{
+                //    Microsoft.Office.Interop.Excel.Worksheet oWorksheet = (Microsoft.Office.Interop.Excel.Worksheet)workbookData.Worksheets.get_Item(i);
+                //    oWorksheet.Select();
+                //    oWorksheet.Delete();
+                //}
+
+                for (int k = 0; k < ds.Tables.Count; k++)
+                {
+                    worksheetData = (Excel.Worksheet)workbookData.Worksheets.Add(System.Reflection.Missing.Value, System.Reflection.Missing.Value, System.Reflection.Missing.Value, System.Reflection.Missing.Value);
+                    // testnum--;
+                    if (ds.Tables[k] != null)
+                    {
+                        worksheetData.Name = ds.Tables[k].TableName;
+                        //寫入標題
+                        for (int i = 0; i < ds.Tables[k].Columns.Count; i++)
+                        {
+                            worksheetData.Cells[1, i + 1] = ds.Tables[k].Columns[i].ColumnName;
+                            range = (Excel.Range)worksheetData.Cells[1, i + 1];
+                            //range.Interior.ColorIndex = 15;
+                            range.Font.Bold = true;
+                            range.Interior.Color = Excel.XlRgbColor.rgbCadetBlue;
+                            range.EntireColumn.NumberFormatLocal = "@";//文本格式 
+                            range.ColumnWidth = 15;
+                            //range.EntireColumn.AutoFit();//自動調整列寬 
+                            //range.WrapText = true; //文本自動換行   
+                            switch (i) 
+                            {
+                                case 0:
+                                case 1:
+                                    range.EntireColumn.AutoFit(); //自動調整列寬 
+                                    break;
+                                case 2:
+                                case 3:
+                                    range.EntireColumn.ColumnWidth = 67.14;
+                                    range.EntireColumn.WrapText = true;
+                                    break;
+                            }
+                        }
+
+
+                        //寫入數值
+                        for (int r = 0; r < ds.Tables[k].Rows.Count; r++)
+                        {
+                            for (int i = 0; i < ds.Tables[k].Columns.Count; i++)
+                            {
+                                worksheetData.Cells[r + 2, i + 1] = ds.Tables[k].Rows[r][i];
+                            }
+                        }
+                    }
+                    worksheetData.Columns.EntireColumn.AutoFit();
+                    workbookData.Saved = true;
+                }
+            }
+            catch (Exception ex) { Console.WriteLine("Error: " + ex.ToString()); }
+            finally
+            {
+                if (ConfigurationManager.AppSettings["SectionName"] != "")
+                    fileName = fileName.Replace(".xlsx", "_" + ConfigurationManager.AppSettings["SectionName"] + ".xlsx");
+                workbookData.SaveCopyAs(fileName);
+                workbookData.Close(false, System.Reflection.Missing.Value, System.Reflection.Missing.Value);
+                appExcel.Quit();
+                GC.Collect();
             }
         }
 
